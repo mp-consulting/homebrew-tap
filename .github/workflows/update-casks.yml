@@ -1,0 +1,40 @@
+name: Update casks
+
+# Points each cask at its project's latest GitHub release. Runs every 6 hours and on demand, with this
+# repository's own token, so the projects need no cross-repository secret.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: apple-mail-mcp
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          CASK=Casks/apple-mail-mcp.rb
+          TAG="$(gh api repos/mp-consulting/apple-mail-mcp/releases/latest -q .tag_name)"
+          VERSION="${TAG#v}"
+          CURRENT="$(sed -n 's/^  version "\(.*\)"/\1/p' "$CASK")"
+          if [ "$VERSION" = "$CURRENT" ]; then echo "apple-mail-mcp $VERSION is current"; exit 0; fi
+          ASSET="AppleMailMCP-$VERSION.dmg"
+          # The release workflow attaches the DMG a few minutes after publishing: wait for the next run.
+          if ! gh release view "$TAG" -R mp-consulting/apple-mail-mcp --json assets -q '.assets[].name' | grep -qx "$ASSET"; then
+            echo "$ASSET is not attached yet"; exit 0
+          fi
+          gh release download "$TAG" -R mp-consulting/apple-mail-mcp -p "$ASSET" -D "$RUNNER_TEMP"
+          SHA="$(sha256sum "$RUNNER_TEMP/$ASSET" | cut -d' ' -f1)"
+          sed -i -e "s/^  version \".*\"/  version \"$VERSION\"/" -e "s/^  sha256 \".*\"/  sha256 \"$SHA\"/" "$CASK"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "apple-mail-mcp $VERSION"
+          git push
