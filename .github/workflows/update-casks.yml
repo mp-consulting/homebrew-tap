@@ -1,7 +1,8 @@
-name: Update casks
+name: Update casks and formulae
 
-# Points each cask at its project's latest GitHub release. Runs every 6 hours and on demand, with this
-# repository's own token, so the projects need no cross-repository secret.
+# Points each cask at its project's latest GitHub release and each formula at its latest npm version.
+# Runs every 6 hours and on demand, with this repository's own token, so the projects need no
+# cross-repository secret.
 on:
   schedule:
     - cron: "17 */6 * * *"
@@ -37,4 +38,19 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -am "apple-mail-mcp $VERSION"
+          git push
+
+      - name: homebridge-ai-kit
+        run: |
+          set -eu
+          FORMULA=Formula/homebridge-ai-kit.rb
+          VERSION="$(curl -fsSL https://registry.npmjs.org/@mp-consulting/homebridge-ai-kit/latest | jq -r .version)"
+          CURRENT="$(sed -n 's|^  url ".*/homebridge-ai-kit-\(.*\)\.tgz"|\1|p' "$FORMULA")"
+          if [ "$VERSION" = "$CURRENT" ]; then echo "homebridge-ai-kit $VERSION is current"; exit 0; fi
+          URL="https://registry.npmjs.org/@mp-consulting/homebridge-ai-kit/-/homebridge-ai-kit-$VERSION.tgz"
+          SHA="$(curl -fsSL "$URL" | sha256sum | cut -d' ' -f1)"
+          sed -i -e "s|^  url \".*\"|  url \"$URL\"|" -e "s/^  sha256 \".*\"/  sha256 \"$SHA\"/" "$FORMULA"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "homebridge-ai-kit $VERSION"
           git push
