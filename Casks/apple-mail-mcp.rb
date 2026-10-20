@@ -1,6 +1,6 @@
 cask "apple-mail-mcp" do
-  version "0.5.0"
-  sha256 "d641fc281fee9b6fd5b31966953d3ada489bd4719fc3989989f697cabaa19297"
+  version "0.6.0"
+  sha256 "0b7a087be01027e6bf9058e73bdf1d37858529c18656372d33261ab269f3f307"
 
   url "https://github.com/mp-consulting/apple-mail-mcp/releases/download/v#{version}/AppleMailMCP-#{version}.dmg"
   name "Apple Mail MCP"
@@ -16,7 +16,7 @@ cask "apple-mail-mcp" do
   depends_on macos: :sonoma
 
   app "Apple Mail MCP.app"
-  binary "#{appdir}/Apple Mail MCP.app/Contents/MacOS/apple-mail-mcp"
+  binary "#{appdir}/Apple Mail MCP.app/Contents/Helpers/Apple Mail MCP Server.app/Contents/MacOS/apple-mail-mcp"
 
   zap trash: [
     "~/Library/Application Support/apple-mail-mcp",
