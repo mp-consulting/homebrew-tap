@@ -40,6 +40,29 @@ jobs:
           git commit -am "apple-mail-mcp $VERSION"
           git push
 
+      - name: apple-calendar-mcp
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          CASK=Casks/apple-calendar-mcp.rb
+          TAG="$(gh api repos/mp-consulting/apple-calendar-mcp/releases/latest -q .tag_name)"
+          VERSION="${TAG#v}"
+          CURRENT="$(sed -n 's/^  version "\(.*\)"/\1/p' "$CASK")"
+          if [ "$VERSION" = "$CURRENT" ]; then echo "apple-calendar-mcp $VERSION is current"; exit 0; fi
+          ASSET="AppleCalendarMCP-$VERSION.dmg"
+          # The release workflow attaches the DMG a few minutes after publishing: wait for the next run.
+          if ! gh release view "$TAG" -R mp-consulting/apple-calendar-mcp --json assets -q '.assets[].name' | grep -qx "$ASSET"; then
+            echo "$ASSET is not attached yet"; exit 0
+          fi
+          gh release download "$TAG" -R mp-consulting/apple-calendar-mcp -p "$ASSET" -D "$RUNNER_TEMP"
+          SHA="$(sha256sum "$RUNNER_TEMP/$ASSET" | cut -d' ' -f1)"
+          sed -i -e "s/^  version \".*\"/  version \"$VERSION\"/" -e "s/^  sha256 \".*\"/  sha256 \"$SHA\"/" "$CASK"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "apple-calendar-mcp $VERSION"
+          git push
+
       - name: homebridge-ai-kit
         run: |
           set -eu

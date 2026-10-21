@@ -2,12 +2,14 @@
 
 ```sh
 brew install --cask mp-consulting/tap/apple-mail-mcp
+brew install --cask mp-consulting/tap/apple-calendar-mcp
 brew install mp-consulting/tap/homebridge-ai-kit
 ```
 
 | Cask | What it is |
 |---|---|
 | [`apple-mail-mcp`](Casks/apple-mail-mcp.rb) | [Apple Mail MCP](https://github.com/mp-consulting/apple-mail-mcp): MCP server and menu bar app that lets Claude search, read and answer Apple Mail |
+| [`apple-calendar-mcp`](Casks/apple-calendar-mcp.rb) | [Apple Calendar MCP](https://github.com/mp-consulting/apple-calendar-mcp): MCP server and menu bar app that lets Claude read, search and plan Apple Calendar |
 
 | Formula | What it is |
 |---|---|
