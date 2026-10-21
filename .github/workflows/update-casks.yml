@@ -1,6 +1,7 @@
 name: Update casks and formulae
 
-# Points each cask at its project's latest GitHub release and each formula at its latest npm version.
+# Points each cask, and the homeswift formula, at its project's latest GitHub release and the other formulae
+# at their latest npm version.
 # Runs every 6 hours and on demand, with this repository's own token, so the projects need no
 # cross-repository secret.
 on:
@@ -61,6 +62,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -am "apple-calendar-mcp $VERSION"
+          git push
+
+      - name: homeswift
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          FORMULA=Formula/homeswift.rb
+          TAG="$(gh api repos/mp-consulting/homeswift/releases/latest -q .tag_name)"
+          CURRENT="$(sed -n 's|^  url ".*/tags/\(.*\)\.tar\.gz"|\1|p' "$FORMULA")"
+          if [ "$TAG" = "$CURRENT" ]; then echo "homeswift $TAG is current"; exit 0; fi
+          URL="https://github.com/mp-consulting/homeswift/archive/refs/tags/$TAG.tar.gz"
+          SHA="$(curl -fsSL "$URL" | sha256sum | cut -d' ' -f1)"
+          sed -i -e "s|^  url \".*\"|  url \"$URL\"|" -e "s/^  sha256 \".*\"/  sha256 \"$SHA\"/" "$FORMULA"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "homeswift ${TAG#v}"
           git push
 
       - name: homebridge-ai-kit
