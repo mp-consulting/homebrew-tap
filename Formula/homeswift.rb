@@ -1,8 +1,8 @@
 class Homeswift < Formula
-  desc "HomeKit Accessory Protocol in Swift, with a demo HomeKit bridge"
+  desc "HomeKit bridge in Swift that runs Homebridge-style plugins"
   homepage "https://github.com/mp-consulting/homeswift"
-  url "https://github.com/mp-consulting/homeswift/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "5df454764abb272f6293d466a43d85e17e96c5455eebe5d23043b4482acd3376"
+  url "https://github.com/mp-consulting/homeswift/archive/refs/tags/v0.3.0.tar.gz"
+  sha256 "0d76160e6261048f1245708cb99b2efd1eae8b2fe2bfd76e55eb52084832d864"
   license "MIT"
   head "https://github.com/mp-consulting/homeswift.git", branch: "main"
 
@@ -16,12 +16,14 @@ class Homeswift < Formula
   uses_from_macos "swift" => :build
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "homeswift-demo"
-    bin.install ".build/release/homeswift-demo"
+    %w[homeswift homeswift-demo].each do |product|
+      system "swift", "build", "--disable-sandbox", "-c", "release", "--product", product
+      bin.install ".build/release/#{product}"
+    end
   end
 
   service do
-    run opt_bin/"homeswift-demo"
+    run opt_bin/"homeswift"
     keep_alive true
     log_path var/"log/homeswift.log"
     error_log_path var/"log/homeswift.log"
@@ -29,16 +31,21 @@ class Homeswift < Formula
 
   def caveats
     <<~EOS
-      Run the demo bridge and pair it in the Home app with the setup code it prints:
-        homeswift-demo
+      Run the bridge and pair it in the Home app with the setup code it prints:
+        homeswift
       Or keep it running in the background:
         brew services start homeswift
       The setup code is then in #{var}/log/homeswift.log.
-      State is kept in ~/.homeswift/homeswift-demo.json; delete it to start over.
+      Plugins are configured in ~/.homeswift/config.json, created on the first run;
+      `homeswift plugins` lists the ones compiled in.
+
+      homeswift-demo is a single demo accessory with no configuration. Its state is kept
+      in ~/.homeswift/homeswift-demo.json; delete it to start over.
     EOS
   end
 
   test do
+    assert_equal version.to_s, shell_output("#{bin}/homeswift --version").strip
     assert_match "usage: homeswift-demo", shell_output("#{bin}/homeswift-demo --help")
   end
 end
