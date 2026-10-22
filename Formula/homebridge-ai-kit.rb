@@ -1,8 +1,8 @@
 class HomebridgeAiKit < Formula
   desc "MCP server that lets Claude and other AI assistants control Homebridge"
   homepage "https://github.com/mp-consulting/homebridge-ai-kit"
-  url "https://registry.npmjs.org/@mp-consulting/homebridge-ai-kit/-/homebridge-ai-kit-3.1.2.tgz"
-  sha256 "a8f31a5a7e8a31ddae444e385631c6a65f4329801357f5a15e90d6162eb6d6be"
+  url "https://registry.npmjs.org/@mp-consulting/homebridge-ai-kit/-/homebridge-ai-kit-3.1.3.tgz"
+  sha256 "c83317eab2d200a7b2aa40c7df0cce3492dbcbb64343fe5a7420905f8e56ed9d"
   license "MIT"
 
   livecheck do
