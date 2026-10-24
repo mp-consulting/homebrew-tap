@@ -20,6 +20,8 @@ class Homeswift < Formula
       system "swift", "build", "--disable-sandbox", "-c", "release", "--product", product
       bin.install ".build/release/#{product}"
     end
+    # The notices of the projects Homeswift ports code from, and the licence texts they refer to.
+    doc.install "THIRD-PARTY-NOTICES.md", "LICENSES"
   end
 
   service do
