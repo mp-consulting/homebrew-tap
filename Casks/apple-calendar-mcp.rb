@@ -1,6 +1,6 @@
 cask "apple-calendar-mcp" do
-  version "0.3.0"
-  sha256 "85936124f0a08b2f3b1f8ec84462784da00112ab237a6f202e4cda186cbff4e8"
+  version "0.4.0"
+  sha256 "d5d2d3d72045440321b8141e1a8ceaeed6a9f7a279642f43f2f9c5585b2786db"
 
   url "https://github.com/mp-consulting/apple-calendar-mcp/releases/download/v#{version}/AppleCalendarMCP-#{version}.dmg"
   name "Apple Calendar MCP"
