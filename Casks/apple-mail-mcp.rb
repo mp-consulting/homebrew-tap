@@ -1,6 +1,6 @@
 cask "apple-mail-mcp" do
-  version "0.7.0"
-  sha256 "4923472807d512a4ce78da0439bac77e432eb17f3e374d6e18ab52a0cb936c83"
+  version "0.7.1"
+  sha256 "4132fc3c9d51441bb63b75f0ee1d53e389a88b00a2b0c4acb20e3358e5ebe5f4"
 
   url "https://github.com/mp-consulting/apple-mail-mcp/releases/download/v#{version}/AppleMailMCP-#{version}.dmg"
   name "Apple Mail MCP"
