@@ -3,6 +3,7 @@
 ```sh
 brew install --cask mp-consulting/tap/apple-mail-mcp
 brew install --cask mp-consulting/tap/apple-calendar-mcp
+brew install --cask mp-consulting/tap/homeswift-wingman
 brew install mp-consulting/tap/homebridge-ai-kit
 brew install mp-consulting/tap/homeswift
 ```
@@ -11,6 +12,7 @@ brew install mp-consulting/tap/homeswift
 |---|---|
 | [`apple-mail-mcp`](Casks/apple-mail-mcp.rb) | [Apple Mail MCP](https://github.com/mp-consulting/apple-mail-mcp): MCP server and menu bar app that lets Claude search, read and answer Apple Mail |
 | [`apple-calendar-mcp`](Casks/apple-calendar-mcp.rb) | [Apple Calendar MCP](https://github.com/mp-consulting/apple-calendar-mcp): MCP server and menu bar app that lets Claude read, search and plan Apple Calendar |
+| [`homeswift-wingman`](Casks/homeswift-wingman.rb) | [Homeswift Wingman](https://github.com/mp-consulting/homeswift-wingman): menu bar app that serves Apple Home's accessories to Homeswift bridges (signed for development: it runs only on its developer's registered Macs) |
 
 | Formula | What it is |
 |---|---|

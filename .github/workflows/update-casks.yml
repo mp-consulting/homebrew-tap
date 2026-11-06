@@ -64,6 +64,29 @@ jobs:
           git commit -am "apple-calendar-mcp $VERSION"
           git push
 
+      - name: homeswift-wingman
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          CASK=Casks/homeswift-wingman.rb
+          TAG="$(gh api repos/mp-consulting/homeswift-wingman/releases/latest -q .tag_name)"
+          VERSION="${TAG#v}"
+          CURRENT="$(sed -n 's/^  version "\(.*\)"/\1/p' "$CASK")"
+          if [ "$VERSION" = "$CURRENT" ]; then echo "homeswift-wingman $VERSION is current"; exit 0; fi
+          ASSET="HomeswiftWingman-$VERSION.dmg"
+          # Scripts/release.sh attaches the DMG as it publishes; a release without it waits for the next run.
+          if ! gh release view "$TAG" -R mp-consulting/homeswift-wingman --json assets -q '.assets[].name' | grep -qx "$ASSET"; then
+            echo "$ASSET is not attached yet"; exit 0
+          fi
+          gh release download "$TAG" -R mp-consulting/homeswift-wingman -p "$ASSET" -D "$RUNNER_TEMP"
+          SHA="$(sha256sum "$RUNNER_TEMP/$ASSET" | cut -d' ' -f1)"
+          sed -i -e "s/^  version \".*\"/  version \"$VERSION\"/" -e "s/^  sha256 \".*\"/  sha256 \"$SHA\"/" "$CASK"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "homeswift-wingman $VERSION"
+          git push
+
       - name: homeswift
         env:
           GH_TOKEN: ${{ github.token }}
