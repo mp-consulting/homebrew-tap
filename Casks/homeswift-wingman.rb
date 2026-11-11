@@ -1,6 +1,6 @@
 cask "homeswift-wingman" do
-  version "0.4.0"
-  sha256 "496842f83c3dd8bfe2e0e273ae1b2ff94286777ac4b6f336b5a32feb79bd69f2"
+  version "0.4.1"
+  sha256 "5cc674a3fac27f13b446c6148d2d1193a98d11677bdd572fa64cf6f2dad55394"
 
   url "https://github.com/mp-consulting/homeswift-wingman/releases/download/v#{version}/HomeswiftWingman-#{version}.dmg"
   name "Homeswift Wingman"
