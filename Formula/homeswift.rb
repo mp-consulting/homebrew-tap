@@ -1,8 +1,8 @@
 class Homeswift < Formula
   desc "HomeKit bridge in Swift that runs Homebridge-style plugins"
   homepage "https://github.com/mp-consulting/homeswift"
-  url "https://github.com/mp-consulting/homeswift/archive/refs/tags/v0.37.2.tar.gz"
-  sha256 "9747f3a441d24ab3b3def591084e37135fe71bb6d5daeeb659a592dc25d2c42c"
+  url "https://github.com/mp-consulting/homeswift/archive/refs/tags/v0.38.0.tar.gz"
+  sha256 "9f858a0223d8489bac804fb22f6cbd11f81d4924ecaf57a50141c5d0da11f1cd"
   license "MIT"
   head "https://github.com/mp-consulting/homeswift.git", branch: "main"
 
